@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Mentor - BuatCuan</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        :root {
+            --primary: #00C853;
+            --accent: #FFD700;
+            --text-main: #FFFFFF;
+            --dark-text: #1C1C1C;
+            --bg-dark: #111111;
+            --bg-darker: #0A0A0A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0A0A0A 0%, #111111 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        header {
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0, 200, 83, 0.1);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 40;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .header-logo .box {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #00C853 0%, #00E06E 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00C853 0%, #00E06E 100%);
+            color: var(--dark-text);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 200, 83, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        .page-subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 32px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 32px;
+            border-bottom: 2px solid rgba(0, 200, 83, 0.1);
+            padding-bottom: 0;
+        }
+
+        .tab-btn {
+            padding: 16px 24px;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: linear-gradient(135deg, rgba(0, 200, 83, 0.05) 0%, rgba(255, 215, 0, 0.02) 100%);
+            border: 1px solid rgba(0, 200, 83, 0.15);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(0, 200, 83, 0.1) 0%, rgba(255, 215, 0, 0.05) 100%);
+            border: 1px solid rgba(0, 200, 83, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: rgba(0, 200, 83, 0.1);
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(0, 200, 83, 0.2);
+            color: var(--primary);
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid rgba(0, 200, 83, 0.1);
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: rgba(0, 200, 83, 0.05);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: rgba(0, 200, 83, 0.2);
+            color: #00FF6E;
+        }
+
+        .status-pending {
+            background: rgba(255, 215, 0, 0.2);
+            color: #FFD700;
+        }
+
+        .status-inactive {
+            background: rgba(255, 107, 107, 0.2);
+            color: #FF8A8A;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(0, 200, 83, 0.2);
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .mentor-info-box {
+            background: rgba(0, 200, 83, 0.1);
+            border: 1px solid rgba(0, 200, 83, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .mentor-info-box strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .mentor-code {
+            font-family: monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background: var(--primary);
+            color: var(--dark-text);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            border: none;
+            margin-left: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: #00E06E;
+        }
+
+        .alert {
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .alert-success {
+            background: rgba(0, 200, 83, 0.1);
+            border: 1px solid rgba(0, 200, 83, 0.3);
+            color: #00FF6E;
+        }
+
+        .alert-info {
+            background: rgba(100, 150, 255, 0.1);
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            color: #6B9EFF;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .tabs {
+                overflow-x: auto;
+            }
+
+            .stat-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="header-logo">
+                <div class="box">+</div>
+                <span>BuatCuan</span>
+            </a>
+            <div class="header-buttons">
+                <a href="dashboard.html" class="btn btn-secondary">Member Dashboard</a>
+                <button class="btn btn-secondary" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1 class="page-title">👥 Portal Mentor</h1>
+        <p class="page-subtitle">Kelola member, verifikasi pembayaran, dan aktifkan akun member</p>
+
+        <div class="alert alert-info">
+            <strong>📌 Catatan:</strong> Sebagai mentor, Anda bertanggung jawab untuk memverifikasi pembayaran member dan mengaktifkan akun mereka.
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Dashboard</button>
+            <button class="tab-btn" onclick="switchTab('members')">👤 Daftar Member</button>
+            <button class="tab-btn" onclick="switchTab('verify')">✅ Verifikasi Pembayaran</button>
+            <button class="tab-btn" onclick="switchTab('referral')">🔗 Kode Referral</button>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalMembers">0</div>
+                    <div class="stat-label">Total Member</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="activeMembers">0</div>
+                    <div class="stat-label">Member Aktif</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="pendingMembers">0</div>
+                    <div class="stat-label">Menunggu Verifikasi</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalCommission">Rp0</div>
+                    <div class="stat-label">Total Komisi</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--primary);">
+                    📋 Ringkasan Status
+                </h3>
+                <p style="color: rgba(255,255,255,0.7); line-height: 1.8; margin-bottom: 16px;">
+                    Anda memiliki <strong id="pendingCount">0</strong> member yang menunggu verifikasi pembayaran. 
+                    Silakan cek tab <strong>Verifikasi Pembayaran</strong> untuk mengaktifkan akun mereka.
+                </p>
+                <button class="btn btn-primary" onclick="switchTab('verify')" style="width: auto;">
+                    Verifikasi Sekarang →
+                </button>
+            </div>
+        </div>
+
+        <!-- Members Tab -->
+        <div id="members" class="tab-content">
+            <div class="card">
+                <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--primary);">
+                    📋 Daftar Seluruh Member
+                </h3>
+                <div class="table-responsive" id="membersTable">
+                    <p style="color: rgba(255,255,255,0.6); text-align: center; padding: 32px;">
+                        Tidak ada data member. Member yang Anda referral akan muncul di sini.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Verify Payment Tab -->
+        <div id="verify" class="tab-content">
+            <div class="card">
+                <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--primary);">
+                    ✅ Verifikasi Pembayaran Member
+                </h3>
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 24px; line-height: 1.6;">
+                    Pilih member yang sudah membayar, lalu klik tombol "Aktifkan" untuk mengaktifkan akun mereka.
+                </p>
+
+                <div id="pendingVerification" style="margin-top: 20px;">
+                    <p style="color: rgba(255,255,255,0.6); text-align: center; padding: 32px;">
+                        Semua member sudah diverifikasi atau tidak ada yang menunggu.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Referral Tab -->
+        <div id="referral" class="tab-content">
+            <div class="card">
+                <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--primary);">
+                    🔗 Kode Referral Mentor
+                </h3>
+                <p style="color: rgba(255,255,255,0.7); margin-bottom: 24px; line-height: 1.6;">
+                    Bagikan kode referral ini kepada calon member. Mereka akan mendaftar menggunakan kode ini.
+                </p>
+
+                <div class="mentor-info-box">
+                    <strong>Kode Mentor Anda:</strong>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
+                        <div class="mentor-code" id="mentorCodeDisplay">MENTOR123456</div>
+                        <button class="copy-btn" onclick="copyToClipboard('MENTOR123456')">Copy</button>
+                    </div>
+                </div>
+
+                <div class="mentor-info-box" style="background: rgba(100, 150, 255, 0.1); border-color: rgba(100, 150, 255, 0.3);">
+                    <strong>Link Registrasi Member:</strong>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-top: 8px;">
+                        <input 
+                            type="text" 
+                            class="form-input" 
+                            id="referralLink"
+                            value="https://example.com/register?ref=MENTOR123456"
+                            readonly
+                            style="flex: 1; margin: 0;"
+                        >
+                        <button class="copy-btn" onclick="copyToClipboard(document.getElementById('referralLink').value)">Copy</button>
+                    </div>
+                </div>
+
+                <div style="background: rgba(0, 200, 83, 0.1); border: 1px solid rgba(0, 200, 83, 0.2); border-radius: 12px; padding: 16px; margin-top: 20px;">
+                    <strong style="color: var(--primary); display: block; margin-bottom: 8px;">📝 Instruksi Berbagi:</strong>
+                    <ol style="color: rgba(255,255,255,0.7); font-size: 14px; line-height: 1.8; padding-left: 20px;">
+                        <li>Copy kode referral di atas</li>
+                        <li>Bagikan kepada calon member via WhatsApp atau media sosial</li>
+                        <li>Member menggunakan kode Anda saat registrasi</li>
+                        <li>Mereka akan terverifikasi sebagai downline Anda</li>
+                        <li>Setelah bayar, Anda dapat mengaktifkan akun mereka</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab Switching
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            // Load data
+            if (tabName === 'members') {
+                loadMembers();
+            } else if (tabName === 'verify') {
+                loadPendingVerifications();
+            }
+        }
+
+        // Load Members
+        function loadMembers() {
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+            const memberTable = document.getElementById('membersTable');
+
+            if (members.length === 0) {
+                memberTable.innerHTML = '<p style="color: rgba(255,255,255,0.6); text-align: center; padding: 32px;">Tidak ada data member.</p>';
+                return;
+            }
+
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>WhatsApp</th>
+                            <th>Status</th>
+                            <th>Bergabung</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            members.forEach(member => {
+                const statusClass = member.activationStatus === 'active' ? 'status-active' : 
+                                   member.activationStatus === 'pending_payment' ? 'status-pending' : 'status-inactive';
+                const statusText = member.activationStatus === 'active' ? '✅ Aktif' : 
+                                  member.activationStatus === 'pending_payment' ? '⏳ Menunggu Bayar' : '🔒 Nonaktif';
+
+                const joinDate = new Date(member.createdAt).toLocaleDateString('id-ID');
+
+                html += `
+                    <tr>
+                        <td><strong>${member.fullName}</strong></td>
+                        <td>${member.email}</td>
+                        <td>${member.whatsapp}</td>
+                        <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                        <td>${joinDate}</td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody></table>`;
+            memberTable.innerHTML = html;
+        }
+
+        // Load Pending Verifications
+        function loadPendingVerifications() {
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+            const pendingMembers = members.filter(m => m.activationStatus === 'pending_payment');
+            const verifyContainer = document.getElementById('pendingVerification');
+
+            if (pendingMembers.length === 0) {
+                verifyContainer.innerHTML = '<p style="color: rgba(255,255,255,0.6); text-align: center; padding: 32px;">Semua member sudah diverifikasi.</p>';
+                return;
+            }
+
+            let html = `<table>
+                <thead>
+                    <tr>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>WhatsApp</th>
+                        <th>Pendaftar</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            pendingMembers.forEach(member => {
+                const joinDate = new Date(member.createdAt).toLocaleDateString('id-ID');
+                html += `
+                    <tr>
+                        <td><strong>${member.fullName}</strong></td>
+                        <td>${member.email}</td>
+                        <td>${member.whatsapp}</td>
+                        <td>${joinDate}</td>
+                        <td>
+                            <button class="btn btn-primary" onclick="activateMember('${member.email}')" style="padding: 8px 16px; font-size: 12px;">
+                                Aktifkan ✅
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody></table>`;
+            verifyContainer.innerHTML = html;
+        }
+
+        // Activate Member
+        function activateMember(email) {
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+            const memberIndex = members.findIndex(m => m.email === email);
+
+            if (memberIndex !== -1) {
+                members[memberIndex].activationStatus = 'active';
+                localStorage.setItem('members', JSON.stringify(members));
+                alert('✅ Member berhasil diaktifkan!');
+                loadPendingVerifications();
+                updateDashboardStats();
+            }
+        }
+
+        // Update Dashboard Stats
+        function updateDashboardStats() {
+            const members = JSON.parse(localStorage.getItem('members') || '[]');
+            const activeMembers = members.filter(m => m.activationStatus === 'active').length;
+            const pendingMembers = members.filter(m => m.activationStatus === 'pending_payment').length;
+
+            document.getElementById('totalMembers').textContent = members.length;
+            document.getElementById('activeMembers').textContent = activeMembers;
+            document.getElementById('pendingMembers').textContent = pendingMembers;
+            document.getElementById('pendingCount').textContent = pendingMembers;
+
+            // Calculate commission (example: Rp 50.000 per active member)
+            const totalCommission = activeMembers * 50000;
+            document.getElementById('totalCommission').textContent = new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(totalCommission);
+        }
+
+        // Copy to Clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+            alert('✅ Disalin ke clipboard!');
+        }
+
+        // Logout
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+
+        // Initialize
+        updateDashboardStats();
+    </script>
+</body>
+</html>

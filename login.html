@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk - BuatCuan</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        :root {
+            --primary: #00C853;
+            --accent: #FFD700;
+            --text-main: #FFFFFF;
+            --dark-text: #1C1C1C;
+            --bg-dark: #111111;
+            --bg-darker: #0A0A0A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0A0A0A 0%, #111111 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        /* Background Animation */
+        .bg-gradient-animated {
+            position: fixed;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            z-index: -1;
+            background: linear-gradient(45deg, #0A0A0A, #1a3a1a, #111111, #0A0A0A);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating particles */
+        .floating-particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(0, 200, 83, 0.3);
+            border-radius: 50%;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+        }
+
+        /* Main Container */
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+            animation: slideInUp 0.8s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Logo */
+        .login-logo {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .logo-box-small {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #00C853 0%, #00E06E 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 12px 32px rgba(0, 200, 83, 0.3);
+            margin: 0 auto 16px;
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo-text-small {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo-text-small .buat {
+            color: var(--text-main);
+        }
+
+        .logo-text-small .cuan {
+            color: var(--accent);
+        }
+
+        /* Form Card */
+        .login-card {
+            background: linear-gradient(135deg, rgba(0, 200, 83, 0.05) 0%, rgba(255, 215, 0, 0.02) 100%);
+            border: 1px solid rgba(0, 200, 83, 0.15);
+            border-radius: 24px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: cardFadeIn 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes cardFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .form-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        .form-subtitle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 32px;
+        }
+
+        /* Form Group */
+        .form-group {
+            margin-bottom: 24px;
+            animation: slideInRight 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.3s; }
+        .form-group:nth-child(2) { animation-delay: 0.4s; }
+        .form-group:nth-child(3) { animation-delay: 0.5s; }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(0, 200, 83, 0.2);
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .form-input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 200, 83, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Remember & Forgot */
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            font-size: 13px;
+            animation: slideInRight 0.6s ease-out 0.55s both;
+        }
+
+        .remember-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(0, 200, 83, 0.3);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .checkbox:hover {
+            border-color: var(--primary);
+            background: rgba(0, 200, 83, 0.1);
+        }
+
+        .checkbox.checked {
+            background: linear-gradient(135deg, #00C853 0%, #00E06E 100%);
+            border-color: var(--primary);
+        }
+
+        .checkbox.checked::after {
+            content: '✓';
+            color: var(--dark-text);
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .forgot-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-link:hover {
+            color: #FFE700;
+            text-decoration: underline;
+        }
+
+        /* Buttons */
+        .btn-login {
+            width: 100%;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #00C853 0%, #00E06E 100%);
+            color: var(--dark-text);
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 200, 83, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            animation: slideInRight 0.6s ease-out 0.6s both;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(0, 200, 83, 0.4);
+        }
+
+        .btn-login:active {
+            transform: scale(0.95);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Register Link */
+        .register-section {
+            text-align: center;
+            margin-top: 28px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            animation: slideInRight 0.6s ease-out 0.7s both;
+        }
+
+        .register-link {
+            color: var(--primary);
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-left: 4px;
+        }
+
+        .register-link:hover {
+            color: #00E06E;
+            text-decoration: underline;
+        }
+
+        /* Error Message */
+        .error-message {
+            padding: 12px 16px;
+            background: rgba(255, 67, 67, 0.1);
+            border: 1px solid rgba(255, 67, 67, 0.3);
+            border-radius: 10px;
+            font-size: 13px;
+            color: #FF6B6B;
+            margin-bottom: 20px;
+            display: none;
+            animation: shake 0.5s ease;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Success Message */
+        .success-message {
+            padding: 12px 16px;
+            background: rgba(0, 200, 83, 0.1);
+            border: 1px solid rgba(0, 200, 83, 0.3);
+            border-radius: 10px;
+            font-size: 13px;
+            color: #00FF6E;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideInUp 0.4s ease;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 16px;
+            }
+
+            .login-card {
+                padding: 32px 20px;
+            }
+
+            .form-title {
+                font-size: 24px;
+            }
+
+            .logo-box-small {
+                width: 60px;
+                height: 60px;
+                font-size: 32px;
+            }
+
+            .logo-text-small {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-gradient-animated"></div>
+    <div class="floating-particles" id="particles"></div>
+
+    <!-- Main Container -->
+    <div class="login-container">
+        <!-- Logo Section -->
+        <div class="login-logo">
+            <div class="logo-box-small">+</div>
+            <div class="logo-text-small">
+                <span class="buat">Buat</span><span class="cuan">Cuan</span>
+            </div>
+        </div>
+
+        <!-- Form Card -->
+        <div class="login-card">
+            <h1 class="form-title">Selamat Datang! 👋</h1>
+            <p class="form-subtitle">Masuk ke akun Anda dan mulai belajar bisnis</p>
+
+            <!-- Error Message -->
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage">✓ Login berhasil! Mengalihkan...</div>
+
+            <!-- Form -->
+            <form id="loginForm">
+                <!-- Email -->
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input 
+                        type="email" 
+                        class="form-input" 
+                        id="email"
+                        placeholder="nama@contoh.com" 
+                        required
+                    >
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input 
+                        type="password" 
+                        class="form-input" 
+                        id="password"
+                        placeholder="Masukkan password Anda" 
+                        required
+                    >
+                </div>
+
+                <!-- Remember & Forgot -->
+                <div class="form-footer">
+                    <label class="remember-group">
+                        <div class="checkbox" id="rememberCheckbox"></div>
+                        <span>Ingat saya</span>
+                    </label>
+                    <a href="#" class="forgot-link">Lupa password?</a>
+                </div>
+
+                <!-- Login Button -->
+                <button type="submit" class="btn-login" id="loginBtn">Login</button>
+            </form>
+
+            <!-- Register Link -->
+            <div class="register-section">
+                Belum punya akun? <a href="register.html" class="register-link">Daftar di sini</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== FLOATING PARTICLES =====
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 20;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const startX = Math.random() * window.innerWidth;
+                const startY = Math.random() * window.innerHeight;
+                const tx = (Math.random() - 0.5) * 200;
+                const ty = (Math.random() - 0.5) * 200;
+                const duration = 15 + Math.random() * 20;
+
+                particle.style.left = startX + 'px';
+                particle.style.top = startY + 'px';
+                particle.style.setProperty('--tx', tx + 'px');
+                particle.style.setProperty('--ty', ty + 'px');
+                particle.style.animationDuration = duration + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // ===== REMEMBER ME CHECKBOX =====
+        const rememberCheckbox = document.getElementById('rememberCheckbox');
+        const rememberInput = document.createElement('input');
+        rememberInput.type = 'hidden';
+        rememberInput.id = 'rememberHidden';
+        document.getElementById('loginForm').appendChild(rememberInput);
+
+        rememberCheckbox.addEventListener('click', () => {
+            rememberCheckbox.classList.toggle('checked');
+            rememberInput.value = rememberCheckbox.classList.contains('checked');
+        });
+
+        // Restore remember state
+        const savedRemember = localStorage.getItem('rememberMe') === 'true';
+        if (savedRemember) {
+            rememberCheckbox.classList.add('checked');
+            rememberInput.value = 'true';
+            const savedEmail = localStorage.getItem('savedEmail');
+            if (savedEmail) {
+                document.getElementById('email').value = savedEmail;
+            }
+        }
+
+        // ===== FORM SUBMISSION =====
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Reset messages
+            errorMessage.classList.remove('show');
+            successMessage.classList.remove('show');
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const rememberMe = rememberCheckbox.classList.contains('checked');
+
+            // Validation
+            if (!email || !password) {
+                showError('Email dan password harus diisi!');
+                return;
+            }
+
+            if (password.length < 6) {
+                showError('Password minimal 6 karakter');
+                return;
+            }
+
+            // Simulate API call
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Sedang masuk...';
+
+            await new Promise(resolve => setTimeout(resolve, 1200));
+
+            // Mock authentication - in real app, validate with backend
+            if (email && password) {
+                // Save to localStorage
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('rememberMe', rememberMe);
+                
+                if (rememberMe) {
+                    localStorage.setItem('savedEmail', email);
+                }
+
+                // Show success & redirect
+                successMessage.classList.add('show');
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+            } else {
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Login';
+                showError('Email atau password salah');
+            }
+        });
+
+        function showError(message) {
+            errorMessage.textContent = '✕ ' + message;
+            errorMessage.classList.add('show');
+            loginBtn.disabled = false;
+            loginBtn.textContent = 'Login';
+        }
+
+        // ===== ENTER KEY SUBMIT =====
+        document.getElementById('password').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                loginForm.dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // ===== FOCUS ANIMATIONS =====
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
